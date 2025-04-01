@@ -31,9 +31,14 @@ def recommend_food():
     location = data['location']
     time = data['time']
 
-    prompt = f"""You are a travel guide. Your tourist is feeling sleepy and also {emotion} around {location} at {time}.
+    prompt = f"""
+    You are a travel guide. Your tourist is feeling sleepy and also {emotion} around {location} at {time}.
     They are driving a car and need some food to refresh.
-    Suggest two food items for them: one vegan and one non-vegan."""
+    Suggest two food items for them: one vegan and one non-vegan.
+    Format the response as:
+    "Hey buddy, why not a <food suggestion> at <restaurant nearby> now?" or
+    "A cup of coffee would make you feel better."
+    """
 
     response = model.generate_content(prompt)
     recommendation = response.text.strip()
