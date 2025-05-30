@@ -1,58 +1,59 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ url_for('static', filename='logo1.webp') }}">
-    <title>AI Based Recommendation System</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: black; /* Very dark grey, almost black */
-            font-family: Arial, sans-serif;
-            color: green; /* White color for the text */
-            margin: 0; /* No margin to body */
-        }
-        .container {
-            width: 350px; /* Adjusted width for the container */
-            background-color: black; /* Background color */
-            padding: 20px;
-            border: 1px solid #0f0; /* Green border similar to the movie system style */
-            box-shadow: 0 0 10px 0 green; /* Green box shadow for glow effect */
-            border-radius: 8px; /* Rounded corners */
-            text-align: center; /* Center text alignment */
-        }
-        h1 {
-            font-size: 24px; /* Adjusted font size for the heading */
-            color: green; /* Green color for the text */
-            margin-bottom: 20px; /* Space below the heading */
-        }
-        .button {
-            display: block; /* Block display for full-width */
-            width: 100%; /* Full width buttons */
-            margin: 10px 0; /* Space around buttons */
-            padding: 10px 0; /* Padding for buttons */
-            font-size: 16px; /* Smaller font size */
-            text-decoration: none;
-            color: black; /* Black text color */
-            background-color: green; /* Green background */
-            border: 1px solid green; /* Solid green border */
-            border-radius: 5px; /* Rounded corners for buttons */
-            cursor: pointer; /* Cursor as pointer */
-        }
-        .button:hover {
-            background-color: #0f0; /* Lighter green on hover */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Recommendation | Home</title>
+  <link rel="icon" href="{{ url_for('static', filename='logo1.webp') }}">
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0f7fa, #80deea);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 360px;
+      text-align: center;
+    }
+    .login-box h2 {
+      color: #0077cc;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+    .login-box a {
+      text-decoration: none;
+    }
+    .login-box button {
+      background: linear-gradient(45deg, #0077cc, #00c6ff);
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 17px;
+      margin: 10px 0;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    .login-box button:hover {
+      background: linear-gradient(45deg, #005fa3, #00acc1);
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>AI Based Recommendation System</h1><br>
-        <a href="/food" class="button">Food</a>
-        <a href="/movie" class="button">Movies</a>
-    </div>
+  <div class="login-box">
+    <h2>🚀 AI Recommendation System</h2>
+    <a href="/food"><button>Food Recommendation</button></a>
+    <a href="/movie"><button>Movie Recommendation</button></a>
+  </div>
 </body>
 </html>

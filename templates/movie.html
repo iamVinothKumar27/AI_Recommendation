@@ -1,151 +1,138 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ url_for('static', filename='logo1.webp') }}">
-    <title>AI Based Movie Recommendation System</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <style>
-        body {
-            background-color: black;
-            color: green;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        form {
-            width: 100%;
-            max-width: 400px;
-            margin: 20px;
-            padding: 20px;
-            border: 1px solid green;
-            box-shadow: 0 0 10px 0 green;
-        }
-        select, button {
-            width: 100%;
-            padding: 8px;
-            margin: 10px 0;
-            box-sizing: border-box;
-            background-color: #333;
-            border: 1px solid green;
-            color: green;
-            font-size: 16px;
-        }
-        button {
-            background-color: green;
-            color: black;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0f0;
-        }
-        #recommendation {
-            padding: 15px;
-            border: 1px solid green;
-            color: green;
-            text-align: center;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Movie Recommendation</title>
+  <link rel="icon" href="{{ url_for('static', filename='logo1.webp') }}">
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0f7fa, #80deea);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 360px;
+      text-align: center;
+    }
+    h2 {
+      color: #0077cc;
+      margin-bottom: 20px;
+    }
+    select, button {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      background: linear-gradient(45deg, #0077cc, #00c6ff);
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #005fa3, #00acc1);
+    }
+    #recommendation {
+      margin-top: 10px;
+      color: #0077cc;
+    }
+  </style>
 </head>
 <body>
+  <div class="login-box">
+    <h2>🎬 Movie Recommendation</h2>
     <form id="recoForm" onsubmit="submitForm(); return false;">
-        <h1>AI Based Movie Recommendation System</h1>
-        Mood: 
-        <select name="mood" id="mood" onchange="updateGenres()" required>
-            <option value="">Select mood...</option>
-            <option value="Happy">Happy</option>
-            <option value="Sad">Sad</option>
-            <option value="Angry">Angry</option>
-            <option value="Disgust">Disgust</option>
-            <option value="Fear">Fear</option>
-            <option value="Surprise">Surprise</option>
-            <option value="Neutral">Neutral</option>
-        </select><br>
-        Language: 
-        <select name="language" required>
-            <option value="">Select language...</option>
-            <option value="English">English</option>
-            <option value="Hindi">Hindi</option>
-            <option value="Telugu">Telugu</option>
-            <option value="Tamil">Tamil</option>
-            <option value="Kannada">Kannada</option>
-            <option value="Malayalam">Malayalam</option>
-            <option value="Korean">Korean</option>
-        </select><br>
-        Genre: 
-        <select name="genre" id="genre" required>
-            <option value="">Select genre...</option>
-        </select><br>
-        <button type="submit">Submit</button>
-        <p id="recommendation"></p>
+      <select name="mood" id="mood" onchange="updateGenres()" required>
+        <option value="">Select mood...</option>
+        <option value="Happy">Happy</option>
+        <option value="Sad">Sad</option>
+        <option value="Angry">Angry</option>
+        <option value="Disgust">Disgust</option>
+        <option value="Fear">Fear</option>
+        <option value="Surprise">Surprise</option>
+        <option value="Neutral">Neutral</option>
+      </select>
+      <select name="language" required>
+        <option value="">Select language...</option>
+        <option value="English">English</option>
+        <option value="Hindi">Hindi</option>
+        <option value="Telugu">Telugu</option>
+        <option value="Tamil">Tamil</option>
+        <option value="Kannada">Kannada</option>
+        <option value="Malayalam">Malayalam</option>
+        <option value="Korean">Korean</option>
+      </select>
+      <select name="genre" id="genre" required>
+        <option value="">Select genre...</option>
+      </select>
+      <button type="submit">Submit</button>
+      <p id="recommendation"></p>
     </form>
+  </div>
+  <script>
+    const moodToGenre = {
+      'Happy': ['Comedy', 'Romance', 'Musical'],
+      'Sad': ['Drama', 'Romantic Drama'],
+      'Angry': ['Action', 'Thriller'],
+      'Disgust': ['Thriller', 'Horror'],
+      'Fear': ['Horror', 'Thriller'],
+      'Surprise': ['Mystery', 'Sci-Fi'],
+      'Neutral': ['Documentary', 'Biography']
+    };
 
-    <script>
-        // Define mood to genre mapping
-        const moodToGenre = {
-            'Happy': ['Comedy', 'Romance', 'Musical'],
-            'Sad': ['Drama', 'Romantic Drama'],
-            'Angry': ['Action', 'Thriller'],
-            'Disgust': ['Thriller', 'Horror'],
-            'Fear': ['Horror', 'Thriller'],
-            'Surprise': ['Mystery', 'Sci-Fi'],
-            'Neutral': ['Documentary', 'Biography']
-        };
+    function updateGenres() {
+      const mood = document.getElementById('mood').value;
+      const genreSelect = document.getElementById('genre');
+      const genres = moodToGenre[mood] || [];
+      genreSelect.innerHTML = '<option value="">Select genre...</option>';
+      genres.forEach(genre => {
+        const option = document.createElement('option');
+        option.value = genre;
+        option.text = genre;
+        genreSelect.appendChild(option);
+      });
+    }
 
-        // Function to update genre options based on selected mood
-        function updateGenres() {
-            const mood = document.getElementById('mood').value;
-            const genreSelect = document.getElementById('genre');
-            const genres = moodToGenre[mood];
-            genreSelect.innerHTML = '<option value="">Select genre...</option>'; // Clear existing options and add placeholder
-            genres.forEach((genre) => {
-                const option = document.createElement('option');
-                option.value = genre;
-                option.text = genre;
-                genreSelect.appendChild(option);
-            });
-        }
+    function speak(text) {
+      window.speechSynthesis.cancel();
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.lang = "en-US";
+      window.speechSynthesis.speak(msg);
+    }
 
-        // Initialize genre dropdown when page loads
-        window.onload = function() {
-            updateGenres(); // To populate genres based on the default selected mood
-        };
+    function submitForm() {
+      const mood = document.getElementById('mood').value;
+      const language = document.querySelector('select[name="language"]').value;
+      const genre = document.getElementById('genre').value;
+      if (mood && language && genre) {
+        fetch('/recommend_movie', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mood, language, genre })
+        }).then(response => response.json())
+          .then(data => {
+            document.getElementById('recommendation').innerText = data.recommendation;
+            speak(data.recommendation);
+          }).catch(console.error);
+      } else {
+        alert("Please fill all fields!");
+      }
+    }
 
-        function speak(text) {
-            window.speechSynthesis.cancel();
-            const msg = new SpeechSynthesisUtterance(text);
-            msg.lang = "en-US";
-            msg.rate = 1;
-            msg.pitch = 1;
-            msg.volume = 1;
-            window.speechSynthesis.speak(msg);
-        }
-
-        function submitForm() {
-            if (document.getElementById('mood').value && document.querySelector('select[name="language"]').value && document.getElementById('genre').value) {
-                const mood = document.getElementById('mood').value;
-                const language = document.querySelector('select[name="language"]').value;
-                const genre = document.getElementById('genre').value; // Get the selected genre
-                const formData = { mood, language, genre };
-                fetch('/recommend_movie', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                }).then(response => response.json())
-                .then(data => {
-                    document.getElementById('recommendation').innerText = data.recommendation;
-                    speak(data.recommendation); // Speak the recommendation
-                }).catch(error => console.error('Error:', error));
-            } else {
-                alert("Please fill all fields!");
-            }
-        }
-    </script>
+    window.onload = updateGenres;
+  </script>
 </body>
 </html>
